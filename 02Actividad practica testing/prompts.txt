@@ -1,0 +1,38 @@
+https://playwright.dev/docs/locators
+
+Generá 5 casos de prueba en base al siguiente requerimiento funcional.
+Para cada caso devolvé:
+- Nombre del caso
+- Pasos
+- Datos de prueba
+- Resultado esperado
+- Criterio de automatización
+Condiciones:
+- Ordenar del caso más crítico al menos crítico.
+- Indicar cuáles deben automatizarse primero.
+- No inventar información no presente en el requerimiento.
+Requerimiento funcional:
+[PEGAR ACÁ]
+
+############################################################################
+
+Actuá como QA funcional.
+Leé el requerimiento funcional y generá casos de prueba.
+Quiero que devuelvas mínimo 5 casos, ordenados por criticidad.
+Cada caso debe tener:
+- Nombre del caso de prueba
+- Pasos
+- Datos de prueba
+- Resultado esperado
+- Criterio de automatización
+En "Criterio de automatización" indicá:
+- Crítico - debe automatizarse
+- Medio - conviene automatizarlo
+- Bajo - no prioritario para automatización
+Reglas:
+- No inventes funcionalidades.
+- No agregues explicaciones teóricas.
+- Redactá los casos de forma simple y clara.
+- Basate únicamente en el requerimiento funcional dado.
+Requerimiento funcional:
+[PEGAR ACÁ]
