@@ -1,0 +1,75 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: login.spec.js >> Login - OrangeHRM >> Login exitoso
+- Location: tests\login.spec.js:30:3
+
+# Error details
+
+```
+Test timeout of 30000ms exceeded while running "beforeEach" hook.
+```
+
+```
+Error: page.goto: Test timeout of 30000ms exceeded.
+Call log:
+  - navigating to "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login", waiting until "domcontentloaded"
+
+```
+
+# Test source
+
+```ts
+  1  | import { expect } from "@playwright/test";
+  2  | 
+  3  | export class LoginPage {
+  4  |   constructor(page) {
+  5  |     this.page = page;
+  6  | 
+  7  |     // Selectores
+  8  |     this.usernameInput = page.getByRole("textbox", { name: /username/i });
+  9  |     this.passwordInput = page.getByRole("textbox", { name: /password/i });
+  10 |     this.loginButton = page.getByRole("button", { name: /login/i });
+  11 |     this.errorMessage = page.getByText(/invalid credentials/i);
+  12 |     this.requiredMessages = page.getByText("Required");
+  13 |     this.form = page.locator("form");
+  14 |     this.title = page.getByRole("heading", { name: /login/i });
+  15 |   }
+  16 | 
+  17 |   async goto() {
+> 18 |     await this.page.goto(
+     |                     ^ Error: page.goto: Test timeout of 30000ms exceeded.
+  19 |       "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login",
+  20 |       {
+  21 |         waitUntil: "domcontentloaded",
+  22 |         timeout: 60000,
+  23 |       },
+  24 |     );
+  25 | 
+  26 |     await expect(this.title).toBeVisible({ timeout: 15000 });
+  27 |     await expect(this.usernameInput).toBeVisible({ timeout: 15000 });
+  28 |     await expect(this.passwordInput).toBeVisible({ timeout: 15000 });
+  29 |     await expect(this.loginButton).toBeVisible({ timeout: 15000 });
+  30 |   }
+  31 | 
+  32 |   async login(username, password) {
+  33 |     await expect(this.usernameInput).toBeEditable({ timeout: 15000 });
+  34 |     await expect(this.passwordInput).toBeEditable({ timeout: 15000 });
+  35 | 
+  36 |     await this.usernameInput.fill(username);
+  37 |     await this.passwordInput.fill(password);
+  38 |     await this.loginButton.click();
+  39 |   }
+  40 | 
+  41 |   async clickLogin() {
+  42 |     await expect(this.loginButton).toBeEnabled({ timeout: 15000 });
+  43 |     await this.loginButton.click();
+  44 |   }
+  45 | }
+  46 | 
+```
