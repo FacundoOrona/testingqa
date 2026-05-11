@@ -4,8 +4,9 @@ export class PimPage {
   constructor(page) {
     this.page = page;
 
+    this.pimMenuLink = page.getByRole("link", { name: "PIM" });
     this.addButton = page.getByRole("button", { name: /add/i });
-    this.employeeInformationHeading = page.getByRole("heading", {
+    this.encabezadoInformacionEmpleado = page.getByRole("heading", {
       name: "Employee Information",
     });
     this.firstNameInput = page.getByRole("textbox", { name: "First Name" });
@@ -16,24 +17,25 @@ export class PimPage {
 
   async expectLoaded() {
     await expect(this.page).toHaveURL(/pim/);
+    await expect(this.pimMenuLink).toHaveClass(/active/);
     await expect(this.addButton).toBeVisible();
   }
 
-  async openAddEmployeeForm() {
+  async openAddEmpleadoForm() {
     await this.addButton.click();
-    await expect(this.employeeInformationHeading).toBeVisible();
+    await expect(this.encabezadoInformacionEmpleado).toBeVisible();
   }
 
-  async addEmployee(employee) {
-    await this.firstNameInput.fill(employee.firstName);
-    await this.middleNameInput.fill(employee.middleName);
-    await this.lastNameInput.fill(employee.lastName);
+  async addEmpleado(empleado) {
+    await this.firstNameInput.fill(empleado.firstName);
+    await this.middleNameInput.fill(empleado.middleName);
+    await this.lastNameInput.fill(empleado.lastName);
     await this.saveButton.click();
   }
 
-  async expectEmployeeCreated(employee) {
+  async expectEmpleadoCreado(empleado) {
     await expect(this.page).toHaveURL(/viewPersonalDetails/);
-    await expect(this.page.getByText(employee.firstName)).toBeVisible();
-    await expect(this.page.getByText(employee.lastName)).toBeVisible();
+    await expect(this.page.getByText(empleado.firstName)).toBeVisible();
+    await expect(this.page.getByText(empleado.lastName)).toBeVisible();
   }
 }

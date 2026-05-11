@@ -1,48 +1,42 @@
 import { test, expect } from "@playwright/test";
+import { LoginPage } from "../pages/LoginPage.js";
+import { DashboardPage } from "../pages/DashboardPage.js";
+import { PimPage } from "../pages/PimPage.js";
+import { users } from "../data/users.js";
+import { empleado } from "../data/empleado.js";
+import { loginAs } from "../helpers/auth.helper.js";
+import { createEmpleado } from "../helpers/empleado.helper.js";
 
-test("Login + Alta de empleado en PIM", async ({ page }) => {
-  // Login
-  await page.goto(
-    "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login",
-  );
+test.describe("PIM - Alta de empleado", () => {
+  let loginPage;
+  let dashboardPage;
+  let pimPage;
 
-  await page.getByRole("textbox", { name: "Username" }).fill("Admin");
-  await page.getByRole("textbox", { name: "Password" }).fill("admin123");
-  await page.getByRole("button", { name: "Login" }).click();
+  test.beforeEach(async ({ page }) => {
+    // Preparamos los page objects para que el test trabaje
+    // con acciones de negocio y no con selectores sueltos.
+    loginPage = new LoginPage(page);
+    dashboardPage = new DashboardPage(page);
+    pimPage = new PimPage(page);
 
-  // Validación: login exitoso
-  await expect(page).toHaveURL(/dashboard/);
+    // El login queda resuelto en el arranque del escenario para que
+    // el caso se enfoque solo en el alta del empleado.
+    await loginAs(page, loginPage, users.valid);
+  });
 
-  // Ir a PIM
-  await page.getByRole("link", { name: "PIM" }).click();
+  test("Alta exitosa de un empleado", async ({ page }) => {
+    // Los datos viven fuera del spec para facilitar reutilizacion,
+    // mantenimiento y futuros escenarios con variantes.
+    const empleadoAlta = empleado.standard;
 
-  //  Validación: estamos en PIM
-  await expect(page).toHaveURL(/pim/);
+    // Reutilizamos el flujo principal desde un helper para expresar
+    // la intencion del caso de prueba con menos ruido tecnico.
+    await createEmpleado(dashboardPage, pimPage, empleadoAlta);
 
-  // Click en Add
-  await page.getByRole("button", { name: /Add/ }).click();
+    // Confirmamos que el guardado llevo al detalle del empleado,
+    // que es la senal principal de una alta exitosa.
+    await expect(page).toHaveURL(/viewPersonalDetails/);
 
-  // Validación: formulario visible
-  await expect(
-    page.getByRole("heading", { name: "Employee Information" }),
-  ).toBeVisible();
-
-  // Completar datos
-  const firstName = "Nuevo";
-  const middleName = "Empleado";
-  const lastName = "Orange";
-
-  await page.getByRole("textbox", { name: "First Name" }).fill(firstName);
-  await page.getByRole("textbox", { name: "Middle Name" }).fill(middleName);
-  await page.getByRole("textbox", { name: "Last Name" }).fill(lastName);
-
-  // Guardar
-  await page.getByRole("button", { name: "Save" }).click();
-
-  //  Validación: empleado creado
-  await expect(page).toHaveURL(/viewPersonalDetails/);
-
-  //  Validación fuerte: nombre visible en pantalla
-  await expect(page.getByText(firstName)).toBeVisible();
-  await expect(page.getByText(lastName)).toBeVisible();
+    await pimPage.expectEmpleadoCreado(empleadoAlta);
+  });
 });
