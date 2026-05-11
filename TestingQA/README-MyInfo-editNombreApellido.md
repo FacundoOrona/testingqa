@@ -13,22 +13,22 @@ Este test valida la edicion de nombre y apellido en `My Info`.
 
 ## Archivos que usa
 
-- [MyInfo-editNombreApellido.spec.js](C:/Users/CYMAX/Documents/GitHub/testingqa/TestingQA/tests/MyInfo-editNombreApellido.spec.js:1)  
+- [MyInfo-editNombreApellido.spec.js]
   Define el caso de prueba.
 
-- [MiInfoPage.js](C:/Users/CYMAX/Documents/GitHub/testingqa/TestingQA/pages/MiInfoPage.js:1)  
+- [MiInfoPage.js]
   Tiene los selectores y acciones de la pantalla `My Info`.
 
-- [miInfo.helper.js](C:/Users/CYMAX/Documents/GitHub/testingqa/TestingQA/helpers/miInfo.helper.js:1)  
+- [miInfo.helper.js]
   Agrupa el flujo de actualizar nombre y apellido.
 
-- [auth.helper.js](C:/Users/CYMAX/Documents/GitHub/testingqa/TestingQA/helpers/auth.helper.js:1)  
+- [auth.helper.js]  
   Hace el login reutilizable.
 
-- [datosPersonales.js](C:/Users/CYMAX/Documents/GitHub/testingqa/TestingQA/data/datosPersonales.js:1)  
+- [datosPersonales.js]
   Guarda los datos a cargar.
 
-- [users.js](C:/Users/CYMAX/Documents/GitHub/testingqa/TestingQA/data/users.js:1)  
+- [users.js]
   Guarda las credenciales.
 
 ## Como correrlo
